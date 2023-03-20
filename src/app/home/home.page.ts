@@ -33,6 +33,16 @@ export class HomePage {
       this.Stoast.showErrorToast(error.message);
     }
   }
+
+  editTask(task:Task){
+    try {
+      this.Stask.edit(task);
+      if(task.estado)this.Stoast.showSuccessToast("¡Completada! ");
+    } catch (error:any) {
+      this.Stoast.showErrorToast(error.message);
+    }
+  }
+
   getProgress(){
     const completed = this.getTasks().filter(task=>task.estado).length;
     const all = this.getTasks().length;

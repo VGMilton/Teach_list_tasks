@@ -20,7 +20,7 @@
     </ion-item-options>
     <ion-item ><!-- *ngIf="!task.estado"-->
       <ion-label>{{task.nombre}}</ion-label>
-      <ion-checkbox [(ngModel)]="task.estado"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="task.estado" (ngModelChange)="editTask(task)"></ion-checkbox>
     </ion-item>
   </ion-item-sliding>
   </ion-list>

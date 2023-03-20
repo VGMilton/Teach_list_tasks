@@ -18,4 +18,15 @@ export class ToastService {
     });
     await toast.present();
   }
+  async showSuccessToast(mensaje:string){
+    const toast = await this.toastCtrl.create({
+      message:mensaje,
+      duration:1500,
+      position:"bottom",
+      color: "success",
+      icon:"checkmark-circle-outline",
+      animated:true,
+    });
+    await toast.present();
+  }
 }

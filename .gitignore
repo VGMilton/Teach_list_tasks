@@ -66,3 +66,9 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+#firebase
+firebase.json
+/firebase
+.firebaserc
+.firebase/hosting.d3d3.cache

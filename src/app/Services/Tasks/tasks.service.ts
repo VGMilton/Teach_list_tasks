@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Task } from 'src/app/Model/task';
+import {Storage} from '@ionic/storage-angular'
 @Injectable({
   providedIn: 'root'
 })
@@ -7,29 +8,30 @@ export class TasksService {
 
   private tasks:Task[] = [];
 
-  constructor(){
+  constructor(private storage:Storage){
     this.initTasks();
   }
 
   async initTasks() {
-    const storedTodos = await this.getTodosFromStorage();
+    const storedTodos = await this.getTasksFromStorage();
     this.tasks = storedTodos;
   }
 
-  private async getTodosFromStorage() {
-    return new Promise<Task[]>((resolve) => {
-     const storedtasks = localStorage.getItem('tasks');
-     if(storedtasks){
-       JSON.parse(storedtasks) as Task[];
-     }else{
-       resolve([]);
-     }
-   });
- }
+  private async getTasksFromStorage() {
+    return new Promise<Task[]>(async (resolve)=>{
+      await this.storage.create(); 
+      const recover = await this.storage.get('tasks');
+      if(await recover){
+        resolve(JSON.parse(recover));
+      }else{
+        resolve([]);
+      }
+    })
+  }
 
   private async saveTasksonStorage(){
     await new Promise(((resolve)=>{
-      localStorage.setItem('tasks',JSON.stringify(this.tasks));
+      this.storage.set('tasks',JSON.stringify(this.tasks));
       resolve(true);
     })) 
   }
@@ -54,11 +56,20 @@ export class TasksService {
     this.saveTasksonStorage();
   }
 
+  edit(task:Task){
+    try {
+      const index = this.getIndexbyId(task.id);
+      this.tasks.splice(index,1,task);
+      this.saveTasksonStorage();
+    } catch (error:any) {
+      throw error.message;
+    }
+  }
+
   delete(task:Task){
     try {
       this.tasks.splice(this.getIndexbyId(task.id),1);
       this.saveTasksonStorage();
-
     } catch (error:any) {
       throw error.message;
     }
