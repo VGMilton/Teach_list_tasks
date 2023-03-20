@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Task } from '../Model/task';
 import { TasksService } from '../Services/Tasks/tasks.service';
+import { ToastService } from '../Services/Toast/toast.service';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -8,10 +9,8 @@ import { TasksService } from '../Services/Tasks/tasks.service';
 })
 
 export class HomePage {
-  private Stask:TasksService
   titulo:any;
-  constructor(Stask:TasksService){
-    this.Stask = Stask;
+  constructor(private Stask:TasksService, private Stoast:ToastService){
     this.titulo="";
   }
   getTasks(){
@@ -23,7 +22,7 @@ export class HomePage {
       this.Stask.add(this.Stask.create(this.titulo));
       this.titulo='';
     } catch (error:any) {
-      console.log(error)
+      this.Stoast.showErrorToast(error.message);
     }
   }
 
@@ -31,7 +30,7 @@ export class HomePage {
     try {
       this.Stask.delete(task);
     } catch (error:any) {
-      console.log(error.message)
+      this.Stoast.showErrorToast(error.message);
     }
   }
   getProgress(){
