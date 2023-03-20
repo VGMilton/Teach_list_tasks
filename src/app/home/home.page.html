@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Lista de tareas
+    </ion-title>
+    <ion-label slot="end" style="padding-right: 15px;">{{getTasks().length}} Tareas por hoy</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-progress-bar [value]="getProgress()"></ion-progress-bar>
+  <ion-item>
+    <ion-input placeholder="Agregar Tarea" [(ngModel)]="titulo"></ion-input>
+    <ion-button slot="end" (click)="addTask()" color="success">Agregar</ion-button>
+  </ion-item>
+  <ion-list>
+    <ion-item-sliding *ngFor="let task of getTasks()">
+    <ion-item-options side="start" >
+      <ion-item-option color="danger" slot = "start" (click)="deleteTask(task)">Eliminar</ion-item-option>
+    </ion-item-options>
+    <ion-item ><!-- *ngIf="!task.estado"-->
+      <ion-label>{{task.nombre}}</ion-label>
+      <ion-checkbox [(ngModel)]="task.estado"></ion-checkbox>
+    </ion-item>
+  </ion-item-sliding>
+  </ion-list>
+
+
+</ion-content>
